@@ -2,414 +2,1168 @@
 <html lang="zh-CN">
 
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
-  <meta property="og:title" content="AI转换助手 - AI对话转Word">
-  <meta property="og:description"
-    content="AI对话转Word、Markdown转Word、LaTeX转Word一站完成。兼容DeepSeek、Kimi、千问、豆包、ChatGPT、Gemini、Grok等主流AI平台，支持LaTeX公式和Mermaid图。 隐私安全，全端通用，专家级技术团队全程支持，最专业的AI对话导出工具。">
-  <meta property="og:site_name" content="AI转换助手">
-  <meta property="og:url" content="https://www.aitoword.chat/">
-  <meta property="og:type" content="website">
-  <meta property="og:locale" content="zh_CN">
-
-  <meta name="keywords" content="AI对话转Word,豆包转Word,豆包公式乱码,LaTeX转Word,Markdown转Word,兼容主流AI平台,Markdown转Excel,AI内容转Word,AI内容转PDF">
-  <link rel="canonical" href="https://www.aitoword.chat/">
-
-  <title>AI转换助手 - 豆包转Word | AIToWord | LaTeX公式转Word</title>
+  <title>Markdown转Word, Markdown转PDF, md转word - 免费Markdown转换工具 | Markdown2Word</title>
   <meta name="description"
-    content="AIToWord，AI对话转Word、Markdown转Word、LaTeX转Word一站完成。兼容DeepSeek、Kimi、千问、豆包、ChatGPT、Gemini、Grok等主流AI平台，支持LaTeX公式和Mermaid图。 隐私安全，全端通用，专家级技术团队全程支持，最专业的AI对话导出工具。" />
-  <link rel="icon"
-    href="https://7365-seekservice-9gkeeztlfcb2a6d4-1301441002.tcb.qcloud.la/docxai-logo-3.png?sign=53048c33e478b4bd6f70a441f5f65bfc&t=1774510155" />
-  <link rel="apple-touch-icon"
-    href="https://7365-seekservice-9gkeeztlfcb2a6d4-1301441002.tcb.qcloud.la/docxai-logo-3.png?sign=53048c33e478b4bd6f70a441f5f65bfc&t=1774510155" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&family=Space+Grotesk:wght@400;500;600;700&display=swap"
-    rel="stylesheet" />
-  <link rel="stylesheet" href="styles.css" />
+    content="Markdown2Word是一款专业的Markdown转换工具，支持Markdown转Word、Markdown转PDF、Markdown转Excel。完美兼容DeepSeek、豆包、千问等AI生成的Markdown内容，完美保留LaTeX公式、Mermaid流程图与代码高亮。">
+  <meta name="keywords"
+    content="Markdown转Word, md转word, Markdown转PDF, Markdown转Excel, Markdown在线转换, AI文档转换, LaTeX公式转换, DeepSeek转Word">
+  <meta name="author" content="Markdown2Word Team">
+  <meta name="robots" content="index, follow">
+
+  <link rel="icon" href="images/markdown2word-logo.png" />
+  <link rel="apple-touch-icon" href="images/markdown2word-logo.png" />
+
+  <!-- Open Graph / Social Media -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://markdown2word.cn/">
+  <meta property="og:title" content="Markdown转Word/PDF - 专业在线Markdown转换器">
+  <meta property="og:description" content="支持Markdown转Word、PDF、Excel。完美保留LaTeX公式与图表，专为AI生成的Markdown内容优化。">
+  <meta property="og:image" content="images/markdown2word-logo.png">
+
+  <!-- Canonical Link -->
+  <link rel="canonical" href="https://markdown2word.cn/">
+
+  <!-- 结构化数据 -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebApplication",
+      "name": "Markdown2Word",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Web, Windows, macOS, Linux",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "CNY"
+      },
+      "description": "专业的在线Markdown转换工具，支持将.md文件转换为Word、PDF和Excel格式。特别优化了对AI生成内容的支持。",
+      "featureList": "Markdown to Word, Markdown to PDF, LaTeX support, Mermaid diagram support"
+    }
+    </script>
+
+  <style>
+    /* ==================== 全局变量与重置 ==================== */
+    :root {
+      --primary-color: #9172EB;
+      /* 稳重的科技蓝 */
+      --primary-hover: #9172EB;
+      --primary-light: #EFF6FF;
+      --bg-body: #FFFFFF;
+      --bg-alt: #F8FAFC;
+      --text-main: #1E293B;
+      --text-secondary: #64748B;
+      --border-color: #E2E8F0;
+      --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+      --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+      --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+      --radius-md: 0.75rem;
+      --radius-lg: 1rem;
+      --font-main: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Microsoft YaHei", sans-serif;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: var(--font-main);
+      line-height: 1.6;
+      color: var(--text-main);
+      background-color: var(--bg-body);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      /* 仅防止水平滚动 */
+    }
+
+    a {
+      text-decoration: none;
+      color: inherit;
+      transition: all 0.3s ease;
+    }
+
+    ul {
+      list-style: none;
+    }
+
+    img {
+      max-width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 0 1.5rem;
+    }
+
+    /* ==================== 通用组件 ==================== */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0.875rem 2rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    .btn-primary {
+      background-color: var(--primary-color);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px 0 rgba(37, 99, 235, 0.23);
+    }
+
+    .btn-outline {
+      background-color: white;
+      border: 2px solid var(--primary-color);
+      color: var(--primary-color);
+    }
+
+    .btn-outline:hover {
+      background-color: var(--primary-light);
+      transform: translateY(-2px);
+    }
+
+    .section-title {
+      text-align: center;
+      margin-bottom: 4rem;
+      max-width: 800px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .section-title h2 {
+      font-size: 2.25rem;
+      font-weight: 800;
+      margin-bottom: 1rem;
+      color: var(--text-main);
+      letter-spacing: -0.02em;
+    }
+
+    .section-title p {
+      font-size: 1.125rem;
+      color: var(--text-secondary);
+    }
+
+    section {
+      padding: 5rem 0;
+      position: relative;
+    }
+
+    /* 动画类 */
+    .fade-in-up {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+    }
+
+    .fade-in-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* ==================== 导航栏 ==================== */
+    header {
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid var(--border-color);
+    }
+
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      height: 70px;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      font-weight: 800;
+      font-size: 1.25rem;
+      color: var(--text-main);
+    }
+
+    .logo img {
+      margin-right: 0.5rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .nav-links a {
+      color: var(--text-secondary);
+      font-weight: 500;
+      font-size: 0.95rem;
+    }
+
+    .nav-links a:hover {
+      color: var(--primary-color);
+    }
+
+    .mobile-menu-btn {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-main);
+    }
+
+    /* ==================== Hero 区域 (内容优先) ==================== */
+    .hero {
+      background-color: var(--bg-body);
+      padding: 6rem 0 5rem;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      /* 响应式字体大小 */
+      line-height: 1.2;
+      font-weight: 900;
+      margin-bottom: 1.5rem;
+      color: var(--text-main);
+      letter-spacing: -0.03em;
+    }
+
+    .hero h1 span {
+      color: var(--primary-color);
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--text-secondary);
+      max-width: 700px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    .hero-btns {
+      display: flex;
+      gap: 1rem;
+      justify-content: center;
+      margin-bottom: 4rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-icons {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+
+    .hero-icons div {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.75rem 1.5rem;
+      background: var(--bg-alt);
+      border-radius: 9999px;
+      border: 1px solid var(--border-color);
+      color: var(--text-secondary);
+      font-weight: 600;
+      font-size: 0.9rem;
+    }
+
+    /* ==================== 功能特点 (以转换格式为核心) ==================== */
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+    }
+
+    .feature-card {
+      background: white;
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      border: 1px solid var(--border-color);
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary-color);
+    }
+
+    .icon-box {
+      width: 3rem;
+      height: 3rem;
+      background-color: var(--primary-light);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.5rem;
+      color: var(--primary-color);
+    }
+
+    .feature-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+      font-weight: 700;
+    }
+
+    .feature-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    /* ==================== 支持平台 (表格) ==================== */
+    .platform-section {
+      background-color: var(--bg-alt);
+    }
+
+    .platform-table-container {
+      background: white;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      overflow-x: auto;
+      /* 防止表格溢出 */
+      border: 1px solid var(--border-color);
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+
+    th {
+      background-color: #F1F5F9;
+      padding: 1rem;
+      text-align: left;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+    }
+
+    th:nth-child(n+2) {
+      text-align: center;
+    }
+
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--border-color);
+      color: var(--text-main);
+      font-weight: 500;
+    }
+
+    td:nth-child(n+2) {
+      text-align: center;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    tr:hover {
+      background-color: #F8FAFC;
+    }
+
+    /* ==================== 插件展示 ==================== */
+    .plugins-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 2rem;
+    }
+
+    .plugin-card {
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      background: white;
+      transition: box-shadow 0.3s ease;
+    }
+
+    .plugin-card:hover {
+      box-shadow: var(--shadow-lg);
+    }
+
+    .plugin-header {
+      height: 140px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+    }
+
+    .plugin-body {
+      padding: 0 2rem 2rem 2rem;
+    }
+
+    .plugin-body h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.75rem;
+      font-weight: 700;
+    }
+
+    .plugin-body p {
+      color: var(--text-secondary);
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+
+    .bg-deepseek {
+      background-color: #3B82F6;
+    }
+
+    .bg-doubao {
+      background-color: #10B981;
+    }
+
+    .bg-qianwen {
+      background-color: #8B5CF6;
+    }
+
+    .bg-universal {
+      background-color: #F59E0B;
+    }
+
+    /* ==================== 使用指南 ==================== */
+    .guide-section {
+      background-color: var(--bg-alt);
+    }
+
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-bottom: 4rem;
+    }
+
+    .step-card {
+      background: white;
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+    }
+
+    .step-number {
+      width: 2.5rem;
+      height: 2.5rem;
+      background-color: var(--primary-color);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      margin-bottom: 1rem;
+    }
+
+    .step-card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+    }
+
+    .step-card p {
+      color: var(--text-secondary);
+      font-size: 0.95rem;
+    }
+
+    .guide-detail {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+      gap: 2rem;
+    }
+
+    .guide-box {
+      background: white;
+      padding: 2rem;
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow-sm);
+      border-left: 4px solid var(--primary-color);
+    }
+
+    .guide-box h4 {
+      display: flex;
+      align-items: center;
+      font-size: 1.1rem;
+      margin-bottom: 1rem;
+      font-weight: 700;
+    }
+
+    .guide-box h4 img {
+      margin-right: 0.75rem;
+    }
+
+    .guide-box ol {
+      padding-left: 1.25rem;
+      color: var(--text-secondary);
+    }
+
+    .guide-box li {
+      margin-bottom: 0.75rem;
+      font-size: 0.95rem;
+    }
+
+    /* ==================== FAQ ==================== */
+    .faq-container {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-md);
+      margin-bottom: 1rem;
+      background: white;
+    }
+
+    .faq-question {
+      width: 100%;
+      text-align: left;
+      padding: 1.25rem;
+      background: white;
+      border: none;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      cursor: pointer;
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--text-main);
+    }
+
+    .faq-question:hover {
+      background-color: #F8FAFC;
+    }
+
+    .faq-answer {
+      padding: 0 1.25rem;
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out, padding 0.3s ease;
+      color: var(--text-secondary);
+    }
+
+    .faq-item.active .faq-answer {
+      padding: 0 1.25rem 1.25rem;
+      max-height: 500px;
+    }
+
+    .arrow {
+      transition: transform 0.3s;
+      color: var(--primary-color);
+      font-size: 0.8rem;
+    }
+
+    .faq-item.active .arrow {
+      transform: rotate(180deg);
+    }
+
+    /* ==================== 页脚 ==================== */
+    footer {
+      background-color: #1E293B;
+      color: white;
+      padding: 4rem 0 2rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 3rem;
+      margin-bottom: 3rem;
+    }
+
+    .footer-brand p {
+      color: #94A3B8;
+      margin: 1.5rem 0;
+      max-width: 300px;
+      font-size: 0.9rem;
+    }
+
+    .social-icons {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .footer-col h3 {
+      font-size: 1rem;
+      margin-bottom: 1.5rem;
+      color: #F1F5F9;
+      font-weight: 700;
+    }
+
+    .footer-col ul li {
+      margin-bottom: 0.75rem;
+    }
+
+    .footer-col a {
+      color: #94A3B8;
+      font-size: 0.9rem;
+    }
+
+    .footer-col a:hover {
+      color: white;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #334155;
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #64748B;
+      font-size: 0.85rem;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+    }
+
+    /* ==================== 响应式设计 ==================== */
+    @media (max-width: 768px) {
+      .hero {
+        padding: 4rem 0 3rem;
+      }
+
+      .nav-links {
+        display: none;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        width: 100%;
+        background: white;
+        flex-direction: column;
+        padding: 1rem;
+        box-shadow: var(--shadow-md);
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      .nav-links.active {
+        display: flex;
+      }
+
+      .mobile-menu-btn {
+        display: block;
+      }
+
+      .footer-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
-  <!-- 全新设计的头部：毛玻璃+精致边框 -->
-  <header class="site-header">
-    <div class="container header-inner">
-      <div class="brand">
-        <img
-          src="https://7365-seekservice-9gkeeztlfcb2a6d4-1301441002.tcb.qcloud.la/web_res/logo-2026-04-01-006.png?sign=7559bf7e9a6dcdb996e9ed793d5d4d61&t=1775034574"
-          alt="AI转换助手" />
-      </div>
-      <nav class="nav-links">
-        <a href="#features">产品优势</a>
-        <a href="#platforms">全端通用</a>
-        <a href="#plugins">浏览器插件</a>
-        <a href="#support">帮助中心</a>
+  <!-- 导航栏 -->
+  <header>
+    <div class="container">
+      <nav>
+        <a href="#" class="logo">
+          <!-- Logo 图片占位 -->
+          <img src="images/markdown2word-logo.png" alt="Markdown2Word Logo" width="32" height="32"
+            style="border-radius: 6px;">
+          Markdown2Word
+        </a>
+
+        <div class="nav-links" id="navLinks">
+          <a href="#features">转换功能</a>
+          <a href="#platforms">支持平台</a>
+          <a href="#plugins">插件下载</a>
+          <a href="#guide">使用教程</a>
+          <a href="#faq">常见问题</a>
+        </div>
+
+        <div style="display: flex; align-items: center; gap: 1rem;">
+          <a href="https://www.aiwhaler.com/" target="_blank" class="btn btn-primary"
+            style="padding: 0.5rem 1.25rem; font-size: 0.9rem; @media(min-width: 768px){display:inline-flex;}">
+            在线转换
+          </a>
+        </div>
       </nav>
-      <a class="btn-primary" href="https://www.aiwhaler.com/" target="_blank" rel="noreferrer">立即使用</a>
     </div>
   </header>
 
-  <main>
-    <!-- Hero 区域：全新不对称网格 + 浮动装饰元素 -->
-    <section class="hero">
-      <div class="container hero-wrapper">
-        <div class="hero-content">
-          <span class="badge-glow">✨ AI转换助手 - AIToWord | 最专业的AI对话导出工具</span>
-          <h1 class="hero-title">AI 对话一键导出<br>Word、PDF、Excel文档</h1>
-          <p class="hero-description">
-            兼容DeepSeek、豆包、ChatGPT、Gemini等主流AI平台，支持LaTeX数学公式、物理公式、化学方程式、Mermaid流程图，完整保留格式排版，快速导出Word、PDF、Excel文档，隐私安全，全端通用，专家级技术团队全程支持
-          </p>
-          <div class="hero-buttons">
-            <a class="btn-primary btn-large" href="https://www.aiwhaler.com/" target="_blank"
-              rel="noreferrer">网页端在线使用</a>
-            <a class="btn-outline" href="#download">下载 App</a>
-            <a class="btn-ghost" href="#plugins">安装插件</a>
-          </div>
-        </div>
-        <div class="hero-visual">
-          <div class="floating-card">
-            <img class="feature-preview" src="images/lowcode-2451411.png" alt="AI转换助手交付能力展示" />
-            <div class="feature-stack">
-              <div class="stack-row">
-                <div class="stack-icon">📄</div>
-                <div><strong>AI对话转Word</strong><span>一键导出，内容精准，排版工整</span></div>
-              </div>
-              <div class="stack-row">
-                <div class="stack-icon">📐</div>
-                <div><strong>支持LaTeX公式</strong><span>数学公式·物理公式·化学方程式</span></div>
-              </div>
-              <div class="stack-row">
-                <div class="stack-icon">🌐</div>
-                <div><strong>全端通用</strong><span>在线网页/App/微信小程序/浏览器插件</span></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
+  <!-- Hero 区域 -->
+  <section class="hero">
+    <div class="container fade-in-up">
+      <!-- SEO核心标题 -->
+      <h1>专业 Markdown 转换器<br><span>一键导出 Word、PDF、Excel</span></h1>
+      <p>
+        Markdown2Word 是鲸鱼AI助手推出的一款强大的 Markdown 转换工具，完美支持 Markdown 转 Word、PDF 和 Excel。特别针对 DeepSeek、豆包 等生成的内容优化，完美还原
+        LaTeX 公式与代码高亮。
+      </p>
 
-    <!-- 兼容性测评 全新卡片式表格 -->
-    <section id="compatibility" class="section section-light">
-      <div class="container">
-        <div class="section-header">
-          <h2>主流AI平台兼容性测评</h2>
-          <p>截止2026年02月02日，AI转换助手 对各大主流 AI 平台的 Markdown 转 Word 能力测评</p>
-        </div>
-        <div class="glass-table">
-          <div class="table-responsive">
-            <table class="modern-table">
-              <thead>
-                <tr>
-                  <th>AI平台</th>
-                  <th>Markdown(无公式)</th>
-                  <th>Markdown(有公式)</th>
-                  <th>Markdown(有Mermaid图)</th>
-                  <th>Markdown(无Mermaid图)</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>DeepSeek</td>
-                  <td>完全支持</td>
-                  <td>完全支持</td>
-                  <td>完全支持</td>
-                  <td>完全支持</td>
-                </tr>
-                <tr>
-                  <td>豆包</td>
-                  <td>完全支持</td>
-                  <td>完全支持</td>
-                  <td>完全支持</td>
-                  <td>完全支持</td>
-                </tr>
-                <tr>
-                  <td>Kimi</td>
-                  <td>完全支持</td>
-                  <td>部分支持</td>
-                  <td>部分支持</td>
-                  <td>完全支持</td>
-                </tr>
-                <tr>
-                  <td>通义千问</td>
-                  <td>完全支持</td>
-                  <td>部分支持</td>
-                  <td>完全支持</td>
-                  <td>完全支持</td>
-                </tr>
-                <tr>
-                  <td>智谱清言</td>
-                  <td>完全支持</td>
-                  <td>部分支持</td>
-                  <td>完全支持</td>
-                  <td>完全支持</td>
-                </tr>
-                <tr>
-                  <td>ChatGPT</td>
-                  <td>完全支持</td>
-                  <td>完全支持</td>
-                  <td>完全支持</td>
-                  <td>完全支持</td>
-                </tr>
-                <tr>
-                  <td>Gemini</td>
-                  <td>完全支持</td>
-                  <td>完全支持</td>
-                  <td>完全支持</td>
-                  <td>完全支持</td>
-                </tr>
-                <tr>
-                  <td>Grok</td>
-                  <td>完全支持</td>
-                  <td>部分支持</td>
-                  <td>完全支持</td>
-                  <td>完全支持</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>
-        </div>
+      <div class="hero-btns">
+        <a href="https://www.aiwhaler.com/" target="_blank" class="btn btn-primary">
+          立即转换 Markdown
+        </a>
+        <a href="#features" class="btn btn-outline">
+          查看转换效果
+        </a>
       </div>
-    </section>
 
-    <!-- 插件生态 卡片全新布局 + 悬浮动效 -->
-    <section id="plugins" class="section">
-      <div class="container">
-        <div class="section-header">
-          <h2>浏览器插件生态</h2>
-          <p>AI转换助手针对各大主流 AI 平台推出了专用插件，服务更专业，兼容性更强</p>
-        </div>
-        <div class="plugin-card-new">
-          <div class="plugin-icon"><img src="images/ai2word-logo.png" alt="DeepSeek 插件 Logo" /></div>
-          <h3>通用版插件</h3>
-          <p>一键将AI生成的 Markdown 内容和 Latex 公式导出为 Word、PDF、Excel 文档，支持 DeepSeek、豆包、ChatGPT、Gemini 等主流AI平台</p>
-          <a href="https://www.aiwhaler.com/plugin/" target="_blank" rel="noreferrer">立即体验 →</a>
-        </div>
-        <div class="plugin-grid">
-          <div class="plugin-card-new">
-            <div class="plugin-icon"><img
-                src="https://seekservice-9gkeeztlfcb2a6d4-1301441002.tcloudbaseapp.com/resources/2025-12/lowcode-2411744"
-                alt="DeepSeek 插件 Logo" /></div>
-            <h3>DeepSeek 插件</h3>
-            <p>AI对话一键转文档</p>
-            <a href="https://deepseek.aiwhaler.com/" target="_blank" rel="noreferrer">立即体验 →</a>
-          </div>
-          <div class="plugin-card-new">
-            <div class="plugin-icon"><img
-                src="https://seekservice-9gkeeztlfcb2a6d4-1301441002.tcloudbaseapp.com/resources/2025-12/lowcode-2411736"
-                alt="豆包插件 Logo" /></div>
-            <h3>豆包插件</h3>
-            <p>LaTeX公式不乱码</p>
-            <a href="https://doubao.aiwhaler.com/" target="_blank" rel="noreferrer">立即体验 →</a>
-          </div>
-          <div class="plugin-card-new">
-            <div class="plugin-icon"><img
-                src="https://seekservice-9gkeeztlfcb2a6d4-1301441002.tcloudbaseapp.com/resources/2026-01/lowcode-2421671"
-                alt="Gemini 插件 Logo" /></div>
-            <h3>Gemini 插件</h3>
-            <p>支持各种复杂Mermaid图</p>
-            <a href="https://gemini.aiwhaler.com/" target="_blank" rel="noreferrer">立即体验 →</a>
-          </div>
-          <div class="plugin-card-new">
-            <div class="plugin-icon"><img
-                src="https://seekservice-9gkeeztlfcb2a6d4-1301441002.tcloudbaseapp.com/resources/2026-01/lowcode-2421670"
-                alt="ChatGPT 插件 Logo" /></div>
-            <h3>ChatGPT 插件</h3>
-            <p>全程支持，数据安全</p>
-            <a href="https://chatgpt.aiwhaler.com/" target="_blank" rel="noreferrer">立即体验 →</a>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 多端支持 + 二维码 全新左右布局，视觉重构 -->
-    <section id="platforms" class="section section-gradient-alt">
-      <div class="container platforms-modern">
-        <div class="platforms-info">
-          <h2>全渠道覆盖，随时随地导出文档</h2>
-          <p>网页、App、小程序与浏览器插件全覆盖，为不同使用场景提供一致体验。</p>
-          <img class="feature-preview" src="images/lowcode-2451410.png" alt="AI转换助手交付能力展示" />
-        </div>
-        <div id="download" class="qr-modern">
-          <div class="qr-title">扫码使用</div>
-          <p>App 与小程序二维码快速获取。</p>
-          <div class="qr-dual">
-            <div class="qr-item"><img
-                src="https://seekservice-9gkeeztlfcb2a6d4-1301441002.tcloudbaseapp.com/resources/2026-01/lowcode-2421725"
-                alt="AI转换助手App二维码" /><span>App 下载</span></div>
-            <div class="qr-item"><img
-                src="https://seekservice-9gkeeztlfcb2a6d4-1301441002.tcloudbaseapp.com/resources/2025-12/lowcode-2403874"
-                alt="AI转换助手小程序二维码" /><span>小程序</span></div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- 产品优势 全新卡片与关键词标签整合 -->
-    <section id="features" class="section">
-      <div class="container">
-        <div class="section-header">
-          <h2>为什么选择 AI转换助手？</h2>
-        </div>
-        <div class="features-grid">
-          <div class="feature-item">
-            <div class="feature-icon"><img
-                src="https://seekservice-9gkeeztlfcb2a6d4-1301441002.tcloudbaseapp.com/resources/2026-02/lowcode-2424003"
-                alt="数据安全" /></div>
-            <h3>隐私安全</h3>
-            <p>对接云数据安全系统，全面保障您的信息隐私与数据安全。</p>
-          </div>
-          <div class="feature-item">
-            <div class="feature-icon"><img
-                src="https://seekservice-9gkeeztlfcb2a6d4-1301441002.tcloudbaseapp.com/resources/2026-02/lowcode-2424006"
-                alt="全程支持" /></div>
-            <h3>全程支持</h3>
-            <p>专家级技术团队全程在线支持，随时解决您的疑难问题。</p>
-          </div>
-          <div class="feature-item">
-            <div class="feature-icon"><img
-                src="https://seekservice-9gkeeztlfcb2a6d4-1301441002.tcloudbaseapp.com/resources/2026-02/lowcode-2424004"
-                alt="持续升级" /></div>
-            <h3>持续升级</h3>
-            <p>专业研发团队持续迭代产品功能，不断提升产品的兼容性。</p>
-          </div>
-          <div class="feature-item">
-            <div class="feature-icon"><img
-                src="https://seekservice-9gkeeztlfcb2a6d4-1301441002.tcloudbaseapp.com/resources/2026-02/lowcode-2424005"
-                alt="多端通用" /></div>
-            <h3>多端通用</h3>
-            <p>在线网页、App、小程序、浏览器插件通用，满足您对不同场景使用需求。</p>
-          </div>
-        </div>
-        <div class="keyword-cloud">
-          <span class="keyword">AI对话转Word</span><span class="keyword">LaTeX转Word</span><span
-            class="keyword">Markdown转Word</span><span class="keyword">兼容主流AI平台</span><span
-            class="keyword">Markdown转Excel</span><span class="keyword">AI内容转Word</span><span
-            class="keyword">AI内容转PDF</span>
-        </div>
-      </div>
-    </section>
-
-    <!-- FAQ 模块 全新折叠面板风格 (内容完全一致) -->
-    <section id="faq" class="section section-faq">
-      <div class="container">
-        <div class="section-header">
-          <h2>功能介绍与常见问题</h2>
-          <p>AI转换助手 的主要功能、操作指南、以及您在使用过程中常见的问题，这里都有详细解答</p>
-        </div>
-        <div id="faq-accordion" class="faq-accordion-container"></div>
-      </div>
-    </section>
-
-    <!-- 支持团队 全新双栏 -->
-    <section id="support" class="section support-new">
-      <div class="container support-flex">
-        <div class="support-left">
-          <h2>专业技术团队全程支持</h2>
-          <p>专业技术团队为您全程护航，不断提升您的使用体验。</p>
-          <div class="support-actions">
-            <a class="btn-outline-light" href="https://www.aiwhaler.com/help/" target="_blank" rel="noreferrer">帮助中心</a>
-            <a class="btn-outline-light" href="https://www.aiwhaler.com/ua/" target="_blank" rel="noreferrer">用户协议</a>
-            <a class="btn-outline-light" href="https://www.aiwhaler.com/pp/" target="_blank" rel="noreferrer">隐私政策</a>
-          </div>
-        </div>
-        <div class="support-right">
-          <div class="social-card">
-            <h3>关注我们</h3>
-            <p>关注 AI转换助手，获取最前沿的AI资讯</p>
-            <div class="social-icons">
-              <a href="https://www.zhihu.com/people/33-44-73-12-10" target="_blank" rel="noreferrer">知乎</a>
-              <span class="wechat-trigger-new">微信公众号
-                <span class="wechat-qr-popup"><img
-                    src="https://seekservice-9gkeeztlfcb2a6d4-1301441002.tcloudbaseapp.com/resources/2025-12/lowcode-2403880"
-                    alt="公众号二维码" /></span>
-              </span>
-              <a href="https://www.xiaohongshu.com/user/profile/64b5fb93000000000b014f78?xsec_token=YBs9EIHtVuIMv2UWOAIHM7QhzUi7QojCZ7lUKYCObpTHU=&xsec_source=app_share&xhsshare=CopyLink&shareRedId=N0tGMzVLOTw2NzUyOTgwNjY0OTc5R0g7&apptime=1759463311&share_id=caa6c636cc1f49269fd532deb81e2d7a"
-                target="_blank" rel="noreferrer">小红书</a>
-            </div>
-            <div class="contact-email"><span>联系邮箱</span><strong>aiwhaler@yeah.net</strong></div>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <footer class="footer">
-    <div class="container footer-inner">
-      <div class="footer-brand"><img
-          src="https://7365-seekservice-9gkeeztlfcb2a6d4-1301441002.tcb.qcloud.la/web_res/logo-2026-04-01-007.png?sign=e9c46b33f7ccac625ccbc00eb0544f15&t=1775035500"
-          alt="AI转换助手" />
-        <p style="font-size: 17px;">专家级的 AI 文案导出工具</p>
-      </div>
-      <div class="footer-links">
-        <h4>产品</h4><a href="#features">产品优势</a><a href="#platforms">全端支持</a><a href="#plugins">插件生态</a>
-      </div>
-      <div class="footer-links">
-        <h4>服务</h4><a href="https://www.aiwhaler.com/help/" target="_blank" rel="noreferrer">帮助中心</a><a
-          href="https://www.aiwhaler.com/ua/" target="_blank" rel="noreferrer">用户协议</a><a
-          href="https://www.aiwhaler.com/pp/" target="_blank" rel="noreferrer">隐私政策</a>
-      </div>
-      <div class="footer-links">
-        <h4>关注我们</h4><a href="https://www.zhihu.com/people/33-44-73-12-10" target="_blank" rel="noreferrer">知乎</a><a
-          href="https://www.xiaohongshu.com/user/profile/64b5fb93000000000b014f78?xsec_token=YBs9EIHtVuIMv2UWOAIHM7QhzUi7QojCZ7lUKYCObpTHU=&xsec_source=app_share&xhsshare=CopyLink&shareRedId=N0tGMzVLOTw2NzUyOTgwNjY0OTc5R0g7&apptime=1759463311&share_id=caa6c636cc1f49269fd532deb81e2d7a"
-          target="_blank" rel="noreferrer">小红书</a><a
-          href="https://www.douyin.com/user/MS4wLjABAAAABp8XqktGdCTIBd9gexYpg2AvXDGUhnJkmkj9J9zhR7GNMPfJEsQixwJRlf9d10Ah"
-          target="_blank" rel="noreferrer">抖音</a>
+      <div class="hero-icons">
+        <img src="images/logo-2026-04-01-012.jpg" alt="Word" width="600" style="border-radius: 10px;">
       </div>
     </div>
-    <p class="copyright">AIToWord · Copyright © 2018 - 2026 AI转换助手版权所有 <a href="https://beian.miit.gov.cn/" target="_blank"
-        rel="noreferrer">湘ICP备2024045717号-7</a></p>
+  </section>
+
+  <!-- 功能特点 -->
+  <section id="features">
+    <div class="container">
+      <div class="section-title fade-in-up">
+        <h2>为什么选择 Markdown2Word？</h2>
+        <p>不仅是简单的格式转换，更是对 Markdown 文档质量的完美还原。</p>
+      </div>
+
+      <div class="features-grid">
+        <!-- 功能 1 -->
+        <div class="feature-card fade-in-up">
+          <div class="icon-box">
+            <img src="images/icon-1.png" alt="Word转换" width="24" height="24">
+          </div>
+          <h3>Markdown 转 Word</h3>
+          <p>将 .md 文件完美转换为可编辑的 Word 文档，保留标题层级、字体样式和列表缩进，无需二次排版。</p>
+        </div>
+
+        <!-- 功能 2 -->
+        <div class="feature-card fade-in-up">
+          <div class="icon-box">
+            <img src="images/icon-2.png" alt="PDF转换" width="24" height="24">
+          </div>
+          <h3>Markdown 转 PDF</h3>
+          <p>高清 PDF 导出，支持自定义页边距，生成的 PDF 文档适合打印和正式分享，格式分毫不差。</p>
+        </div>
+
+        <!-- 功能 3 -->
+        <div class="feature-card fade-in-up">
+          <div class="icon-box">
+            <img src="images/icon-3.png" alt="公式支持" width="24" height="24">
+          </div>
+          <h3>LaTeX 公式完美支持</h3>
+          <p>自动识别 LaTeX 数学公式并转换为 Word 原生公式对象或 PDF 矢量图，告别图片乱码。</p>
+        </div>
+
+        <!-- 功能 4 -->
+        <div class="feature-card fade-in-up">
+          <div class="icon-box">
+            <img src="images/icon-4.png" alt="AI适配" width="24" height="24">
+          </div>
+          <h3>AI 内容深度适配</h3>
+          <p>专为 DeepSeek、豆包、千问 等 AI 生成的大量 Markdown 内容优化，支持批量转换。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 支持平台 (表格) -->
+  <section id="platforms" class="platform-section">
+    <div class="container">
+      <div class="section-title fade-in-up">
+        <h2>全平台兼容，无缝转换</h2>
+        <p>无论您是在网页端、桌面端还是手机端，都能流畅使用 Markdown2Word。</p>
+      </div>
+
+      <div class="platform-table-container fade-in-up">
+        <table>
+          <thead>
+            <tr>
+              <th>功能/平台</th>
+              <th>在线网页版</th>
+              <th>浏览器插件</th>
+              <th>桌面客户端</th>
+              <th>API 接口</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Markdown 转 Word</strong></td>
+              <td><span style="color:var(--primary-color);">✓ 支持</span></td>
+              <td><span style="color:var(--primary-color);">✓ 支持</span></td>
+              <td><span style="color:var(--primary-color);">✓ 支持</span></td>
+              <td><span style="color:var(--primary-color);">✓ 支持</span></td>
+            </tr>
+            <tr>
+              <td><strong>Markdown 转 PDF</strong></td>
+              <td><span style="color:var(--primary-color);">✓ 支持</span></td>
+              <td><span style="color:var(--primary-color);">✓ 支持</span></td>
+              <td><span style="color:var(--primary-color);">✓ 支持</span></td>
+              <td><span style="color:var(--primary-color);">✓ 支持</span></td>
+            </tr>
+            <tr>
+              <td><strong>批量转换</strong></td>
+              <td><span style="color:#F59E0B;">即将上线</span></td>
+              <td><span style="color:var(--primary-color);">✓ 支持</span></td>
+              <td><span style="color:var(--primary-color);">✓ 支持</span></td>
+              <td><span style="color:var(--primary-color);">✓ 支持</span></td>
+            </tr>
+            <tr>
+              <td><strong>LaTeX 公式</strong></td>
+              <td><span style="color:var(--primary-color);">✓ 完美支持</span></td>
+              <td><span style="color:var(--primary-color);">✓ 完美支持</span></td>
+              <td><span style="color:var(--primary-color);">✓ 完美支持</span></td>
+              <td><span style="color:var(--primary-color);">✓ 完美支持</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- 插件展示 -->
+  <section id="plugins">
+    <div class="container">
+      <div class="section-title fade-in-up">
+        <h2>浏览器插件，随时转换</h2>
+        <p>在浏览 AI 对话时，一键将 Markdown 内容转换为文档。</p>
+      </div>
+
+      <div class="plugins-grid">
+        <!-- DeepSeek -->
+        <div class="plugin-card fade-in-up">
+          <div class="plugin-header">
+            <img src="images/plugin-deepseek.png" alt="DeepSeek插件" width="80" height="80"
+              style="border-radius: 8px; background: rgba(255,255,255,0.2); padding: 0px;">
+          </div>
+          <div class="plugin-body">
+            <h3>DeepSeek 插件</h3>
+            <p>在 DeepSeek 网页版直接调用，支持 Markdown 转 Word，保留代码块与表格结构。</p>
+            <a href="https://m.aiwhaler.com/deepseek.html" target="_blank" class="btn btn-primary"
+              style="width: 100%;">下载插件</a>
+          </div>
+        </div>
+
+        <!-- 豆包 -->
+        <div class="plugin-card fade-in-up">
+          <div class="plugin-header">
+            <img src="images/plugin-doubao.png" alt="豆包插件" width="80" height="80"
+              style="border-radius: 8px; background: rgba(255,255,255,0.2); padding: 0px;">
+          </div>
+          <div class="plugin-body">
+            <h3>豆包插件</h3>
+            <p>优化对豆包 Markdown 语法的解析，解决公式转换问题，支持导出 PDF。</p>
+            <a href="https://doubao.aiwhaler.com/index/" target="_blank" class="btn btn-primary"
+              style="width: 100%;">下载插件</a>
+          </div>
+        </div>
+
+        <!-- 千问 -->
+        <div class="plugin-card fade-in-up">
+          <div class="plugin-header">
+            <img src="images/plugin-zhipu.png" alt="千问插件" width="80" height="80"
+              style="border-radius: 8px; background: rgba(255,255,255,0.2); padding: 0px;">
+          </div>
+          <div class="plugin-body">
+            <h3>智谱清言插件</h3>
+            <p>针对智谱清言生成的长文档优化，支持 Markdown 转 Excel 表格提取。</p>
+            <a href="https://m.aiwhaler.com/chatglm.html" target="_blank" class="btn btn-primary"
+              style="width: 100%;">下载插件</a>
+          </div>
+        </div>
+
+        <!-- 通用版 -->
+        <div class="plugin-card fade-in-up">
+          <div class="plugin-header">
+            <img src="images/plugin-base.png" alt="通用插件" width="80" height="80"
+              style="border-radius: 8px; background: rgba(255,255,255,0.2); padding: 0px;">
+          </div>
+          <div class="plugin-body">
+            <h3>通用版插件</h3>
+            <p>兼容所有网页文本，识别 Markdown 格式并转换为 Word 文档，随处可用。</p>
+            <a href="https://www.aiwhaler.com/plugin/" target="_blank" class="btn btn-primary"
+              style="width: 100%;">下载插件</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 使用指南 -->
+  <section id="guide" class="guide-section">
+    <div class="container">
+      <div class="section-title fade-in-up">
+        <h2>如何使用 Markdown 转换器</h2>
+        <p>只需简单的三步，即可完成 Markdown 到 Word 的转换。</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card fade-in-up">
+          <div class="step-number">1</div>
+          <h3>准备 Markdown 文本</h3>
+          <p>复制您的 Markdown 内容，或者准备好需要转换的 .md 文件。支持从任何编辑器或 AI 对话框中复制。</p>
+        </div>
+
+        <div class="step-card fade-in-up">
+          <div class="step-number">2</div>
+          <h3>粘贴或上传</h3>
+          <p>打开 Markdown2Word 在线工具，将内容粘贴到输入框，或者直接点击上传文件图标。</p>
+        </div>
+
+        <div class="step-card fade-in-up">
+          <div class="step-number">3</div>
+          <h3>选择格式并导出</h3>
+          <p>选择您需要的输出格式（Word/PDF/Excel），点击转换按钮，几秒钟后即可下载。</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 常见问题 (FAQ) -->
+  <section id="faq">
+    <div class="container">
+      <div class="section-title fade-in-up">
+        <h2>常见问题解答</h2>
+        <p>关于 Markdown 转换、格式兼容及隐私安全的详细说明</p>
+      </div>
+
+      <div class="faq-container">
+        <!-- Q1: 核心功能与操作 (SEO: Markdown转Word, 如何使用) -->
+        <div class="faq-item fade-in-up">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            如何在线将 Markdown 转换为 Word 文档？
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>使用 Markdown2Word 进行转换非常简单。首先，将您的 Markdown 内容复制到剪贴板，或者准备好 .md 文件。然后，打开我们的在线转换工具，粘贴文本或上传文件，选择输出格式为 Word
+              (.docx)，点击“开始转换”即可。整个过程免费且无需安装任何软件。</p>
+          </div>
+        </div>
+
+        <!-- Q3: 核心难点 - 公式 (SEO: LaTeX, 数学公式, 乱码) -->
+        <div class="faq-item fade-in-up">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            转换工具支持 LaTeX 数学公式吗？会出现乱码吗？
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>这是我们核心优势之一。Markdown2Word 完美支持 LaTeX 数学公式转换。我们会将 LaTeX 语法（如 $E=mc^2$）智能解析并转换为 Word 原生的 OMML
+              公式对象，这意味着转换后的公式在 Word 中是可以直接编辑的，绝不会出现图片乱码或模糊的问题。</p>
+          </div>
+        </div>
+
+        <!-- Q4: 核心难点 - 表格 (SEO: 表格错位, Excel, 兼容性) -->
+        <div class="faq-item fade-in-up">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            为什么我的 Markdown 表格转换到 Word 后错位了？
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>这种情况通常是因为源 Markdown 的表格语法不够标准。Markdown2Word 内置了“智能表格修复”算法，能自动对齐列宽。如果仍有问题，请确保源文本中使用标准的 `|`
+              分隔符，或者尝试使用我们的“Markdown 转 Excel”功能，提取表格数据后再粘贴回 Word。</p>
+          </div>
+        </div>
+
+        <!-- Q5: 多格式支持 (SEO: PDF, Excel, 格式支持) -->
+        <div class="faq-item fade-in-up">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            除了 Word，还支持导出 PDF 和 Excel 吗？
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>支持。Markdown2Word 是一款全能的转换工具。您可以将 Markdown 导出为高清 PDF 文档（适合打印和归档），也可以将其中的表格数据提取并导出为 Excel (.xlsx)
+              文件。在插件和桌面版中，您甚至可以一键同时导出这三种格式。</p>
+          </div>
+        </div>
+
+        <!-- Q6: 批量处理 (SEO: 批量转换, 效率) -->
+        <div class="faq-item fade-in-up">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            能否批量转换多个 .md 文件？
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>网页版目前支持单文件转换。如果您需要批量处理大量 Markdown 文件（例如将整个电子书项目转换），建议下载我们的桌面客户端或安装浏览器插件。这些版本支持文件夹拖拽批量转换，能极大提高您的工作效率。</p>
+          </div>
+        </div>
+
+        <!-- Q7: 移动端适配 (SEO: 手机, iPhone, Android, 移动端) -->
+        <div class="faq-item fade-in-up">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            手机上可以使用 Markdown2Word 吗？
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>完全可以。Markdown2Word 是基于 Web 开发的，完美适配移动端浏览器。无论您使用的是 iPhone、Android 手机还是 iPad，只需在浏览器中访问我们的网站，即可随时随地完成
+              Markdown 到 Word 的转换，无需下载 App。</p>
+          </div>
+        </div>
+
+        <!-- Q8: 代码高亮 (SEO: 代码块, 程序员, 开发者) -->
+        <div class="faq-item fade-in-up">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            转换后的文档代码高亮会保留吗？
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>会保留。我们针对程序员的使用场景做了特别优化。Markdown 中的代码块在转换为 Word 后，会保留背景色和字体颜色高亮，并且在 Word 中仍然可以正常编辑代码内容，不会变成纯黑文字。</p>
+          </div>
+        </div>
+
+        <!-- Q9: 图片处理 (SEO: 图片, 截图, Mermaid) -->
+        <div class="faq-item fade-in-up">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            如何保留 Markdown 中的图片和 Mermaid 流程图？
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>对于本地图片链接，我们会自动嵌入到 Word 文档中。对于 Mermaid 流程图语法，我们的引擎会将其渲染为高清矢量图并插入文档，您无需担心图表丢失或模糊。请注意，网络图片需要确保可访问性。</p>
+          </div>
+        </div>
+
+        <!-- Q10: 隐私安全 (SEO: 隐私, 安全, 数据泄露) -->
+        <div class="faq-item fade-in-up">
+          <button class="faq-question" onclick="toggleFaq(this)">
+            上传的文件会泄露隐私吗？数据会被存储吗？
+            <span class="arrow">▼</span>
+          </button>
+          <div class="faq-answer">
+            <p>我们非常重视用户隐私。您的文件仅在服务器内存中进行瞬时处理，转换完成后会立即从服务器端删除，我们不会保留、查看或分享您的任何文档数据。对于极度敏感的文档，建议使用我们的离线桌面客户端进行本地转换。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- 页脚 -->
+  <footer>
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <div class="logo" style="color: white; margin-bottom: 1rem;">
+            <img src="images/markdown2word-logo.png" alt="Markdown2Word Logo" width="24" height="24">
+            Markdown2Word
+          </div>
+          <p>专注于 Markdown 文档格式的完美转换。为您提供最稳定的 Markdown 转 Word、PDF 解决方案。</p>
+        </div>
+
+        <div class="footer-col">
+          <h3>产品功能</h3>
+          <ul>
+            <li><a href="#features">Markdown 转 Word</a></li>
+            <li><a href="#features">Markdown 转 PDF</a></li>
+            <li><a href="#features">公式与图表支持</a></li>
+            <li><a href="#plugins">浏览器插件</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h3>帮助与支持</h3>
+          <ul>
+            <li><a href="#guide">使用教程</a></li>
+            <li><a href="https://www.aiwhaler.com/help/">帮助中心</a></li>
+            <li><a href="https://www.aiwhaler.com/pp/">隐私政策</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 Markdown2Word. All rights reserved.</p>
+        <div class="footer-links">
+          <a href="https://www.aiwhaler.com/ua/">服务条款</a>
+          <a href="sitemap.xml">Sitemap</a>
+        </div>
+      </div>
+    </div>
   </footer>
 
+  <!-- JavaScript 交互逻辑 -->
   <script>
-    (function () {
-      // 完全保持原始 FAQ 数据，但渲染方式改为优雅的折叠卡片(全部展开保持内容可见)
-      const faqData = {
-        questions: [
-          { id: 592, categoryId: 3, title: "AI转换助手 可以做什么？", answer: "AI转换助手 可以将 DeepSeek、豆包、Kimi、Gemini、千问、ChatGPT、文心等主流 AI 生成的 LaTeX 数学公式、复杂表格、Markdown 文本一键转换为 Word、PDF、Excel 文档，解决复制到 Word 后格式乱码的问题。" },
-          { id: 591, categoryId: 3, title: "AI 生成的公式如何复制到 Word 文档？", answer: "AI工具（例如：DeepSeek、豆包、ChatGPT、Gemini）生成的公式通常是LaTeX格式，直接复制到Word会显示为乱码。使用 AI转换助手 可以快速将 LaTeX 公式转换为 Word 文档，只需粘贴AI生成的内容，点击转换，即可下载排版工整的Word文档。" },
-          { id: 590, categoryId: 3, title: "如何在线将 LaTeX 公式转换为 Word 文档？", answer: "打开 AI转换助手 官网（www.aitoword.chat），将 LaTeX 公式代码粘贴到输入框，点击转换按钮，即可在线完成 LaTeX 公式转 Word 操作。支持各种复杂的 LaTeX 公式，转换后的 Word 文档中公式可直接编辑。" },
-          { id: 595, categoryId: 3, title: "AI转换助手 支持 LaTeX 表格转 Word 文档吗？", answer: "支持。AI转换助手 不仅可以将 LaTeX 公式转 Word，还可以将 LaTeX 表格、Markdown 表格转换为 Word 可编辑表格，保留行列结构、合并单元格等格式，适用于论文写作、科研报告、策划方案编辑等场景。" },
-          { id: 596, categoryId: 3, title: "如何将 AI 生成的 Markdown 内容转为 Word 文档？", answer: "将 AI 生成的 Markdown 文本粘贴到 AI转换助手 输入框，或直接上传.md文件，点击转换按钮即可生成格式规范的 Word 文档。系统会自动识别 Markdown 语法并转换为 Word 原生格式。" },
-          { id: 51, title: "LaTeX 公式乱码", answer: "AI转换助手 支持所有的 LaTeX 数学公式、物理公式和化学方程式。如果您导出的内容中出现了公式错乱，请联系在线客服反馈给我们，我们会在1个工作日内修复问题。", categoryId: 2 },
-          { id: 89, title: "LaTeX 公式出现虚线方框", answer: "对于某些特殊的数学符号，转换后会出现虚线方框，如果您想要去除这些虚线方框，可先用鼠标点击虚线方框，然后使用键盘输入空格即可。", categoryId: 2 },
-          { id: 4, title: "小程序端预览文件时，公式不显示", answer: "微信小程序端预览文件时，可能会出现公式无法正常展示的情况，如果您的文件中包含公式，请使用WPS预览文件，或将文件分享到电脑端进行预览。详情请咨询客服。", categoryId: 2 },
-          { id: 3, title: "转换成 Excel 文件无内容", answer: "AI转换助手 会自动匹配文案中的表格，如果您的文案中不包含表格，或文案格式不标准，则可能会导致生成的文件内容为空。", categoryId: 2 },
-          { id: 5, title: "Html 格式文案转换异常", answer: "AI转换助手 默认支持的文案格式为 Markdown，Html 格式的文案会导致转换异常，由此，建议您与 AI 对话时，不要要求 AI 以 Html 的格式回复内容。", categoryId: 2 },
-          { id: 6, title: "Mermaid 流程图生成失败", answer: "请优先检查您的数据格式，数据格式错误是导致流程图无法正常生成的主要原因。AI转换助手会自动帮您修复常见的格式问题，对于少量不太常见的格式问题，可联系在线客服进行处理。", categoryId: 2 },
-          { id: 4, title: "隐私保护相关", answer: "AI转换助手 承诺保护您的隐私，仅在必要情况下，您在 AI转换助手 中产生的文件和数据会进行加密存储，且您随时可以永久删除这些文件和数据。", categoryId: 3 },
-          { id: 40, title: "DeepSeek网页端用户", answer: "1.与DeepSeek对话并生成文案内容。\n2.点击文案下方DeepSeek自带的复制按钮（注意：不要全选复制或长按复制，这样做可能会导致文案格式异常）\n3.将文案粘贴到AI转换助手，导出为Word或Pdf文档。", categoryId: 1 },
-          { id: 41, title: "DeepSeek、文心手机端用户", answer: "1.与DeepSeek对话并生成文案内容（请在对话中添加这段话——'请使用markdown格式返回内容，并使用markdown标签包裹内容'）\n2.点击markdown文案右上方的复制按钮（注意：不要全选复制或长按复制，这样做可能会导致文案格式异常）\n3.将文案粘贴到AI转换助手，导出为Word或Pdf文档。", categoryId: 1 },
-          { id: 42, title: "豆包网页端用户", answer: "1.与豆包对话并生成文案内容。\n2.点击文案上方豆包自带的下载-Markdown按钮（注意：不要全选复制或长按复制，这样做可能会导致文案格式异常），将后缀为.md的文件下载到电脑中。\n3.打开.md文件，复制文件中的全部内容。\n4.将内容粘贴到AI转换助手，导出为Word或Pdf文档。", categoryId: 1 },
-          { id: 43, title: "豆包手机端用户", answer: "1.与豆包对话并生成文案内容。\n2.点击文案下方的分享按钮，选择导出文件-TXT文件，点击导出按钮。\n3.豆包会自动打开.txt文件，请选择并复制文件中的内容。\n4.将内容粘贴到AI转换助手，导出为Word或Pdf文档。", categoryId: 1 },
-          { id: 48, categoryId: 1, title: "Gemini、GPT、Grok手机端用户", answer: "1.与Gemini、GPT、Grok对话并生成文案内容（请在对话中添加这段话——“请使用markdown格式返回内容，并使用markdown标签包裹内容”）\n2.文案生成好后，点击markdown文案右上方的复制按钮（注意：不要全选复制或长按复制，这样做可能会导致文案格式异常）\n3.将文案粘贴到AI转换助手，点击导出为Word或Pdf文档按钮。" }
-        ],
-        categories: [{ id: 1, title: "操作指南" }, { id: 2, title: "文件转换问题" }, { id: 3, title: "功能介绍" }, { id: 4, title: "AI转换助手福利" }]
-      };
-      const container = document.getElementById('faq-accordion');
-      if (container) {
-        const catMap = new Map();
-        faqData.categories.forEach(c => catMap.set(c.id, { title: c.title, items: [] }));
-        faqData.questions.forEach(q => {
-          const cat = catMap.get(q.categoryId);
-          if (cat) cat.items.push(q);
-        });
-        let html = '<div class="faq-columns">';
-        for (let [id, cat] of catMap.entries()) {
-          if (cat.items.length === 0) continue;
-          html += `<div class="faq-cat-card"><div class="faq-cat-title">${escapeHtml(cat.title)}</div><div class="faq-list">`;
-          cat.items.forEach(item => {
-            let answerHtml = escapeHtml(item.answer).replace(/\n/g, '<br>');
-            html += `<div class="faq-q-item"><div class="faq-q">${escapeHtml(item.title)}</div><div class="faq-a">${answerHtml}</div></div>`;
-          });
-          html += `</div></div>`;
-        }
-        html += '</div>';
-        container.innerHTML = html;
+    // 移动端菜单切换
+    function toggleMenu() {
+      const navLinks = document.getElementById('navLinks');
+      navLinks.classList.toggle('active');
+    }
+
+    // FAQ 手风琴效果
+    function toggleFaq(button) {
+      const item = button.parentElement;
+      const isActive = item.classList.contains('active');
+
+      // 关闭所有其他项
+      document.querySelectorAll('.faq-item').forEach(faq => {
+        faq.classList.remove('active');
+      });
+
+      // 切换当前项
+      if (!isActive) {
+        item.classList.add('active');
       }
-      function escapeHtml(str) { if (!str) return ''; return str.replace(/[&<>]/g, function (m) { if (m === '&') return '&amp;'; if (m === '<') return '&lt;'; if (m === '>') return '&gt;'; return m; }); }
-    })();
+    }
+
+    // 平滑滚动
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+      anchor.addEventListener('click', function (e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href');
+        if (targetId === '#') return;
+
+        const targetElement = document.querySelector(targetId);
+        if (targetElement) {
+          // 关闭移动端菜单
+          document.getElementById('navLinks').classList.remove('active');
+
+          targetElement.scrollIntoView({
+            behavior: 'smooth',
+            block: 'start'
+          });
+        }
+      });
+    });
+
+    // 滚动动画 (IntersectionObserver)
+    document.addEventListener('DOMContentLoaded', () => {
+      const observerOptions = {
+        root: null,
+        rootMargin: '0px',
+        threshold: 0.1
+      };
+
+      const observer = new IntersectionObserver((entries, observer) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      }, observerOptions);
+
+      const scrollElements = document.querySelectorAll('.fade-in-up');
+      scrollElements.forEach(el => observer.observe(el));
+    });
   </script>
 </body>
 
