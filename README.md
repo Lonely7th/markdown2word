@@ -1,0 +1,1 @@
+Markdown2Word是一款专业的Markdown转换工具，支持Markdown转Word、Markdown转PDF、Markdown转Excel。完美兼容DeepSeek、豆包、千问等AI生成的Markdown内容，完美保留LaTeX公式、Mermaid流程图与代码高亮。在线使用：https://markdown2word.cn
