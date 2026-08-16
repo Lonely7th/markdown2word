@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://markdown2word.cn/sitemap.xml
+Sitemap: https://www.markdown2word.cn/sitemap.xml
