@@ -12,7 +12,8 @@
     loginPoll: null,
     loginCountdown: null,
     pendingConversion: false,
-    busy: false
+    busy: false,
+    downloadObjectUrl: ''
   };
 
   const el = {
@@ -331,6 +332,25 @@
     el.convertButton.textContent = busy ? '正在生成文档…' : `转换为 ${state.format === 'word' ? 'Word' : 'PDF'}`;
   }
 
+  async function prepareDownload(url, fileName) {
+    const secureUrl = url.replace(/^http:/, 'https:');
+    if (state.downloadObjectUrl) {
+      URL.revokeObjectURL(state.downloadObjectUrl);
+      state.downloadObjectUrl = '';
+    }
+    el.downloadLink.href = secureUrl;
+    el.downloadLink.setAttribute('download', fileName);
+    try {
+      const response = await fetch(secureUrl);
+      if (!response.ok) throw new Error('文件读取失败');
+      const blob = await response.blob();
+      state.downloadObjectUrl = URL.createObjectURL(blob);
+      el.downloadLink.href = state.downloadObjectUrl;
+    } catch {
+      // Keep the original URL as a fallback when the file host blocks CORS.
+    }
+  }
+
   async function performConversion() {
     setBusy(true);
     el.result.classList.remove('visible');
@@ -356,10 +376,11 @@
       const url = state.format === 'word' ? result.doc_url : result.pdf_url;
       if (!url) throw new Error('文档已生成，但没有收到下载地址');
       const label = state.format === 'word' ? 'Word DOCX' : 'PDF';
+      const extension = state.format === 'word' ? 'docx' : 'pdf';
+      const fileName = `markdown2word-${Date.now()}.${extension}`;
+      await prepareDownload(url, fileName);
       el.resultText.textContent = `${label} 已生成，可以下载。`;
-      el.downloadLink.href = url.replace(/^http:/, 'https:');
       el.downloadLink.textContent = `下载 ${label}`;
-      el.downloadLink.setAttribute('download', '');
       el.result.classList.add('visible');
       showStatus('转换完成。', 'success');
       el.downloadLink.click();
@@ -424,7 +445,11 @@
     const loggedIn = state.user.userStatus === 'loggedIn' && state.user.userId;
     if (!loggedIn) openLogin(); else if (state.user.vipStatus !== 'vip') openVip(); else showStatus('当前账号为VIP会员。', 'success');
   });
-  el.logoutButton.addEventListener('click', () => { clearUser(); showStatus('已退出登录。'); });
+  el.logoutButton.addEventListener('click', () => {
+    if (!window.confirm('确定要退出当前账号吗？')) return;
+    clearUser();
+    showStatus('已退出登录。');
+  });
   document.querySelectorAll('[data-close-modal]').forEach(button => button.addEventListener('click', () => {
     const modal = button.closest('.modal');
     if (modal === el.loginModal) stopLoginPolling();
@@ -450,4 +475,7 @@
   renderAccount();
   updatePreview();
   if (state.user.userStatus === 'loggedIn') refreshUserInfo(false);
+  window.addEventListener('pagehide', () => {
+    if (state.downloadObjectUrl) URL.revokeObjectURL(state.downloadObjectUrl);
+  });
 })();
