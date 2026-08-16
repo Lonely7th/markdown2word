@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+Disallow: /tmp/
+
+Sitemap: https://www.markdown2word.cn/sitemap.xml
