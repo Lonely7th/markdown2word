@@ -339,7 +339,6 @@
       const result = await request(endpoint, {
         content: el.input.value,
         openid: state.user.userId,
-        inc: '1',
         line: 1,
         formula_position: '0'
       }, { token: state.user.userToken });

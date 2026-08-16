@@ -18,14 +18,14 @@
 .account-status strong{color:var(--ink)}
 .logout-button{display:none}
 .logout-button.visible{display:inline-flex}
-.editor-grid{display:grid;grid-template-columns:1fr 1fr;min-height:520px}
+.editor-grid{display:grid;grid-template-columns:1fr 1fr;height:498px;min-height:0}
 .editor-pane{min-width:0;display:flex;flex-direction:column}
 .editor-pane:first-child{border-right:1px solid var(--line)}
 .pane-heading{height:48px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;border-bottom:1px solid var(--line);color:#4d5870;font-size:13px;font-weight:800;background:#fbfcff}
 .pane-heading span:last-child{font-weight:500;color:#8a94a7}
-#markdownInput{width:100%;flex:1;min-height:450px;border:0;resize:none;outline:0;padding:20px;font:14px/1.72 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;color:#18243a;background:#fff;tab-size:2}
+#markdownInput{width:100%;height:450px;min-height:450px;max-height:450px;flex:0 0 450px;overflow-y:auto;border:0;resize:none;outline:0;padding:20px;font:14px/1.72 ui-monospace,SFMono-Regular,Consolas,"Liberation Mono",monospace;color:#18243a;background:#fff;tab-size:2}
 #markdownInput::placeholder{color:#99a3b5}
-.preview{flex:1;min-height:450px;padding:22px;overflow:auto;color:#26344e;background:#fff}
+.preview{height:450px;min-height:450px;max-height:450px;flex:0 0 450px;padding:22px;overflow:auto;color:#26344e;background:#fff}
 .preview-empty{color:#99a3b5;display:grid;place-items:center;min-height:390px;text-align:center}
 .preview h1,.preview h2,.preview h3,.preview h4{line-height:1.35;color:#13213b;margin:1.1em 0 .55em}
 .preview h1{font-size:30px;border-bottom:1px solid #e6eaf2;padding-bottom:9px;margin-top:0}
@@ -51,5 +51,5 @@
 .payment-button{width:100%;border:0;cursor:pointer;font:inherit;margin-top:13px}.payment-button:disabled{opacity:.65;cursor:wait}
 .privacy-note{display:flex;gap:10px;align-items:flex-start;background:#f7f8fc;border:1px solid var(--line);border-radius:13px;padding:14px 16px;margin-top:20px;color:#59667e;font-size:13px}.privacy-note b{color:#24334d}
 .support-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}.support-item{border:1px solid var(--line);border-radius:16px;padding:20px;background:#fff}.support-item b{display:block;margin-bottom:5px}.support-item span{font-size:14px;color:var(--muted)}
-@media(max-width:900px){.editor-grid{grid-template-columns:1fr}.editor-pane:first-child{border-right:0;border-bottom:1px solid var(--line)}#markdownInput,.preview{min-height:330px}.converter-toolbar{align-items:flex-start}.account-area{justify-content:flex-end}.support-grid{grid-template-columns:repeat(2,1fr)}}
-@media(max-width:600px){.tool-hero{padding:38px 0 24px}.tool-intro h1{font-size:36px}.tool-intro p{font-size:16px}.converter-shell{border-radius:17px}.converter-toolbar{display:block}.tool-actions{margin-top:9px}.account-area{margin-top:9px;justify-content:flex-start}.editor-grid{min-height:0}#markdownInput,.preview{min-height:300px;padding:16px}.converter-bottom{display:block}.convert-button{width:100%;margin-top:10px}.result-card.visible{display:block}.result-card a{display:inline-flex;margin-top:9px}.support-grid{grid-template-columns:1fr}.trust-row{gap:8px 14px}}
+@media(max-width:900px){.editor-grid{grid-template-columns:1fr;height:auto}.editor-pane:first-child{border-right:0;border-bottom:1px solid var(--line)}#markdownInput,.preview{height:330px;min-height:330px;max-height:330px;flex-basis:330px}.converter-toolbar{align-items:flex-start}.account-area{justify-content:flex-end}.support-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:600px){.tool-hero{padding:38px 0 24px}.tool-intro h1{font-size:36px}.tool-intro p{font-size:16px}.converter-shell{border-radius:17px}.converter-toolbar{display:block}.tool-actions{margin-top:9px}.account-area{margin-top:9px;justify-content:flex-start}.editor-grid{height:auto}#markdownInput,.preview{height:300px;min-height:300px;max-height:300px;flex-basis:300px;padding:16px}.converter-bottom{display:block}.convert-button{width:100%;margin-top:10px}.result-card.visible{display:block}.result-card a{display:inline-flex;margin-top:9px}.support-grid{grid-template-columns:1fr}.trust-row{gap:8px 14px}}
