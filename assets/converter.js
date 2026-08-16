@@ -20,6 +20,7 @@
     preview: document.querySelector('#markdownPreview'),
     charCount: document.querySelector('#charCount'),
     upload: document.querySelector('#markdownFile'),
+    pasteButton: document.querySelector('#pasteButton'),
     uploadButton: document.querySelector('#uploadButton'),
     sampleButton: document.querySelector('#sampleButton'),
     clearButton: document.querySelector('#clearButton'),
@@ -372,6 +373,29 @@
   const sample = `# Markdown 转 Word 示例\n\nMarkdown2Word 可以保留常用的文档结构，并生成可编辑的 Word 文档。\n\n## 支持的内容\n\n- **加粗文字**和*强调文字*\n- 有序列表与无序列表\n- 代码块、引用和链接\n- Markdown 表格\n- LaTeX 公式：$E = mc^2$\n\n| 功能 | 输出结果 |\n| --- | --- |\n| 标题 | Word 标题样式 |\n| 表格 | 可编辑表格 |\n| 公式 | 数学公式 |\n\n> 正式交付前，建议在 Word 或 WPS 中复核最终文档。\n\n\`\`\`javascript\nconst message = 'Hello, Markdown2Word';\nconsole.log(message);\n\`\`\``;
 
   el.input.addEventListener('input', updatePreview);
+  el.pasteButton.addEventListener('click', async () => {
+    if (!navigator.clipboard || typeof navigator.clipboard.readText !== 'function') {
+      showStatus('当前浏览器无法直接读取剪贴板，请点击输入框后按 Ctrl+V。', 'error');
+      el.input.focus();
+      return;
+    }
+    try {
+      const text = await navigator.clipboard.readText();
+      if (!text) {
+        showStatus('剪贴板中没有可粘贴的文本。', 'error');
+        return;
+      }
+      const start = el.input.selectionStart ?? el.input.value.length;
+      const end = el.input.selectionEnd ?? start;
+      el.input.setRangeText(text, start, end, 'end');
+      updatePreview();
+      showStatus('已粘贴剪贴板内容。');
+      el.input.focus();
+    } catch {
+      showStatus('未获得剪贴板读取权限，请点击输入框后按 Ctrl+V。', 'error');
+      el.input.focus();
+    }
+  });
   el.uploadButton.addEventListener('click', () => el.upload.click());
   el.upload.addEventListener('change', async () => {
     const file = el.upload.files && el.upload.files[0];
