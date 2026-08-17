@@ -5,6 +5,8 @@
   const PAYMENT_QR = 'https://7365-seekservice-9gkeeztlfcb2a6d4-1301441002.tcb.qcloud.la/mini-gotopay.png?sign=61cda63121f6df0be8f4d11caa43002a&t=1755240478';
   const STORAGE_KEY = 'markdown2word_user_v1';
   const MAX_FILE_SIZE = 2 * 1024 * 1024;
+  const TOOL_TYPE = document.body.dataset.converter === 'latex' ? 'latex' : 'markdown';
+  const isLatexTool = TOOL_TYPE === 'latex';
 
   const state = {
     format: 'word',
@@ -17,10 +19,10 @@
   };
 
   const el = {
-    input: document.querySelector('#markdownInput'),
-    preview: document.querySelector('#markdownPreview'),
+    input: document.querySelector('#markdownInput, #latexInput'),
+    preview: document.querySelector('#markdownPreview, #latexPreview'),
     charCount: document.querySelector('#charCount'),
-    upload: document.querySelector('#markdownFile'),
+    upload: document.querySelector('#markdownFile, #latexFile'),
     pasteButton: document.querySelector('#pasteButton'),
     uploadButton: document.querySelector('#uploadButton'),
     sampleButton: document.querySelector('#sampleButton'),
@@ -174,14 +176,73 @@
     return html.join('');
   }
 
+  function hasMathDelimiters(source) {
+    return /\$\$[\s\S]+?\$\$|\$[^$\n]+?\$|\\\([\s\S]+?\\\)|\\\[[\s\S]+?\\\]|\\begin\{(?:equation\*?|align\*?|gather\*?|multline\*?)\}/.test(source);
+  }
+
+  function normalizeLatex(source) {
+    let content = source.replace(/^\uFEFF/, '').replace(/\r\n?/g, '\n').trim();
+    content = content
+      .replace(/^\s*\\documentclass(?:\[[^\]]*\])?\{[^}]+\}\s*$/gm, '')
+      .replace(/^\s*\\usepackage(?:\[[^\]]*\])?\{[^}]+\}\s*$/gm, '')
+      .replace(/^\s*\\begin\{document\}\s*$/gm, '')
+      .replace(/^\s*\\end\{document\}\s*$/gm, '')
+      .replace(/\\section\*?\{([^}]+)\}/g, '# $1')
+      .replace(/\\subsection\*?\{([^}]+)\}/g, '## $1')
+      .replace(/\\subsubsection\*?\{([^}]+)\}/g, '### $1')
+      .replace(/\\\[([\s\S]*?)\\\]/g, (_, formula) => `$$\n${formula.trim()}\n$$`)
+      .replace(/\\\(([\s\S]*?)\\\)/g, (_, formula) => `$${formula.trim()}$`)
+      .replace(/\\begin\{equation\*?\}([\s\S]*?)\\end\{equation\*?\}/g, (_, formula) => `$$\n${formula.trim()}\n$$`)
+      .replace(/\\begin\{align\*?\}([\s\S]*?)\\end\{align\*?\}/g, (_, formula) => `$$\n\\begin{aligned}\n${formula.trim()}\n\\end{aligned}\n$$`)
+      .replace(/\\begin\{gather\*?\}([\s\S]*?)\\end\{gather\*?\}/g, (_, formula) => `$$\n\\begin{gathered}\n${formula.trim()}\n\\end{gathered}\n$$`)
+      .replace(/\\begin\{multline\*?\}([\s\S]*?)\\end\{multline\*?\}/g, (_, formula) => `$$\n${formula.trim()}\n$$`)
+      .replace(/\n{3,}/g, '\n\n')
+      .trim();
+    if (content && !hasMathDelimiters(content)) content = `$$\n${content}\n$$`;
+    return content;
+  }
+
+  function renderLatex(source) {
+    if (!source.trim()) {
+      el.preview.innerHTML = '<div class="preview-empty">在左侧输入 LaTeX，公式预览会显示在这里。</div>';
+      return;
+    }
+    const content = normalizeLatex(source);
+    el.preview.textContent = content;
+    if (typeof window.renderMathInElement !== 'function') {
+      el.preview.innerHTML = '<div class="preview-empty">公式预览组件加载失败，但仍可尝试转换。</div>';
+      return;
+    }
+    let errorCount = 0;
+    window.renderMathInElement(el.preview, {
+      delimiters: [
+        { left: '$$', right: '$$', display: true },
+        { left: '$', right: '$', display: false },
+        { left: '\\(', right: '\\)', display: false },
+        { left: '\\[', right: '\\]', display: true }
+      ],
+      throwOnError: false,
+      trust: false,
+      strict: 'warn',
+      errorCallback: () => { errorCount += 1; }
+    });
+    if (errorCount) {
+      const note = document.createElement('div');
+      note.className = 'latex-preview-note error';
+      note.textContent = '部分语法无法完整预览，你仍然可以尝试转换为 Word';
+      el.preview.prepend(note);
+    }
+  }
+
   let previewTimer;
   function updatePreview() {
     clearTimeout(previewTimer);
     previewTimer = setTimeout(() => {
       const content = el.input.value;
-      el.preview.innerHTML = renderMarkdown(content);
+      if (isLatexTool) renderLatex(content);
+      else el.preview.innerHTML = renderMarkdown(content);
       el.charCount.textContent = `${content.length.toLocaleString('zh-CN')} 字符`;
-    }, 80);
+    }, isLatexTool ? 150 : 80);
   }
 
   function showStatus(message, type = '') {
@@ -318,7 +379,7 @@
   async function startConversion() {
     if (state.busy) return;
     if (!el.input.value.trim()) {
-      showStatus('请先输入或上传 Markdown 内容。', 'error');
+      showStatus(`请先输入或上传 ${isLatexTool ? 'LaTeX' : 'Markdown'} 内容。`, 'error');
       el.input.focus();
       return;
     }
@@ -358,7 +419,7 @@
     try {
       const endpoint = state.format === 'word' ? 'pc2word' : 'pc2pdf';
       const result = await request(endpoint, {
-        content: el.input.value,
+        content: isLatexTool ? normalizeLatex(el.input.value) : el.input.value,
         openid: state.user.userId,
         line: 1,
         formula_position: '0'
@@ -377,7 +438,7 @@
       if (!url) throw new Error('文档已生成，但没有收到下载地址');
       const label = state.format === 'word' ? 'Word DOCX' : 'PDF';
       const extension = state.format === 'word' ? 'docx' : 'pdf';
-      const fileName = `markdown2word-${Date.now()}.${extension}`;
+      const fileName = `${isLatexTool ? 'latex2word' : 'markdown2word'}-${Date.now()}.${extension}`;
       await prepareDownload(url, fileName);
       el.resultText.textContent = `${label} 已生成，可以下载。`;
       el.downloadLink.textContent = `下载 ${label}`;
@@ -391,9 +452,33 @@
     }
   }
 
-  const sample = `# Markdown 转 Word 示例\n\nMarkdown2Word 可以保留常用的文档结构，并生成可编辑的 Word 文档。\n\n## 支持的内容\n\n- **加粗文字**和*强调文字*\n- 有序列表与无序列表\n- 代码块、引用和链接\n- Markdown 表格\n- LaTeX 公式：$E = mc^2$\n\n| 功能 | 输出结果 |\n| --- | --- |\n| 标题 | Word 标题样式 |\n| 表格 | 可编辑表格 |\n| 公式 | 数学公式 |\n\n> 正式交付前，建议在 Word 或 WPS 中复核最终文档。\n\n\`\`\`javascript\nconst message = 'Hello, Markdown2Word';\nconsole.log(message);\n\`\`\``;
+  const markdownSample = `# Markdown 转 Word 示例\n\nMarkdown2Word 可以保留常用的文档结构，并生成可编辑的 Word 文档。\n\n## 支持的内容\n\n- **加粗文字**和*强调文字*\n- 有序列表与无序列表\n- 代码块、引用和链接\n- Markdown 表格\n- LaTeX 公式：$E = mc^2$\n\n| 功能 | 输出结果 |\n| --- | --- |\n| 标题 | Word 标题样式 |\n| 表格 | 可编辑表格 |\n| 公式 | 数学公式 |\n\n> 正式交付前，建议在 Word 或 WPS 中复核最终文档。\n\n\`\`\`javascript\nconst message = 'Hello, Markdown2Word';\nconsole.log(message);\n\`\`\``;
+  const latexSample = `\\section{常用数学公式}\n\n二次方程的求根公式为：\n\n\\[\n x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}\n\\]\n\n欧拉公式为 $e^{i\\pi}+1=0$。\n\n\\begin{equation}\n \\int_0^\\infty e^{-x^2}\\,dx = \\frac{\\sqrt{\\pi}}{2}\n\\end{equation}`;
+  const sample = isLatexTool ? latexSample : markdownSample;
 
   el.input.addEventListener('input', updatePreview);
+  el.input.addEventListener('keydown', event => {
+    if (!isLatexTool || event.key !== 'Tab') return;
+    event.preventDefault();
+    const start = el.input.selectionStart;
+    const end = el.input.selectionEnd;
+    el.input.setRangeText('  ', start, end, 'end');
+    updatePreview();
+  });
+  document.querySelectorAll('[data-latex-insert]').forEach(button => button.addEventListener('click', () => {
+    const snippet = button.dataset.latexInsert || '';
+    const start = el.input.selectionStart ?? el.input.value.length;
+    const end = el.input.selectionEnd ?? start;
+    const selected = el.input.value.slice(start, end);
+    const inserted = selected && snippet.includes('{}') ? snippet.replace('{}', `{${selected}}`) : snippet;
+    el.input.setRangeText(inserted, start, end, 'end');
+    if (!selected) {
+      const placeholder = inserted.indexOf('{}');
+      if (placeholder >= 0) el.input.setSelectionRange(start + placeholder + 1, start + placeholder + 1);
+    }
+    updatePreview();
+    el.input.focus();
+  }));
   el.pasteButton.addEventListener('click', async () => {
     if (!navigator.clipboard || typeof navigator.clipboard.readText !== 'function') {
       showStatus('当前浏览器无法直接读取剪贴板，请点击输入框后按 Ctrl+V。', 'error');
@@ -421,7 +506,11 @@
   el.upload.addEventListener('change', async () => {
     const file = el.upload.files && el.upload.files[0];
     if (!file) return;
-    if (!/\.(md|markdown|txt)$/i.test(file.name)) { showStatus('请选择 .md、.markdown 或 .txt 文件。', 'error'); return; }
+    const allowedFile = isLatexTool ? /\.(tex|latex|txt)$/i : /\.(md|markdown|txt)$/i;
+    if (!allowedFile.test(file.name)) {
+      showStatus(`请选择 ${isLatexTool ? '.tex、.latex 或 .txt' : '.md、.markdown 或 .txt'} 文件。`, 'error');
+      return;
+    }
     if (file.size > MAX_FILE_SIZE) { showStatus('文件不能超过 2 MB。', 'error'); return; }
     try {
       el.input.value = await file.text();

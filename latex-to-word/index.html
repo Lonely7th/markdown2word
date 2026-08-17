@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>LaTeX转Word在线工具｜公式转DOCX，可实时预览 - Markdown2Word</title>
+  <meta name="description" content="在线将 LaTeX 公式和混合文本转换为可编辑的 Word DOCX，支持实时公式预览、TEX文件上传、矩阵、积分、分式和PDF输出。">
+  <link rel="canonical" href="https://www.markdown2word.cn/latex-to-word/">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="LaTeX转Word在线工具 - Markdown2Word">
+  <meta property="og:description" content="输入 LaTeX 公式，实时预览并生成可编辑的 Word DOCX">
+  <meta property="og:url" content="https://www.markdown2word.cn/latex-to-word/">
+  <meta property="og:image" content="https://www.markdown2word.cn/images/og.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="LaTeX转Word在线工具 - Markdown2Word">
+  <meta name="twitter:description" content="支持公式实时预览和 Word DOCX 输出">
+  <meta name="twitter:image" content="https://www.markdown2word.cn/images/og.webp">
+  <link rel="icon" href="../images/markdown2word-logo.png">
+  <link rel="stylesheet" href="../assets/site.css">
+  <link rel="stylesheet" href="../assets/vendor/katex/katex.min.css">
+  <link rel="stylesheet" href="../assets/converter.css">
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"WebApplication","name":"LaTeX转Word在线工具","alternateName":["Latex2Word","LaTeX公式转Word"],"url":"https://www.markdown2word.cn/latex-to-word/","applicationCategory":"BusinessApplication","operatingSystem":"Web","browserRequirements":"支持现代桌面和移动浏览器","description":"将LaTeX公式和混合文本转换为Word DOCX或PDF的在线工具","featureList":["LaTeX转Word","LaTeX公式预览","TEX文件上传","LaTeX转PDF"]}
+  </script>
+</head>
+<body data-converter="latex">
+  <a class="skip" href="#converter">跳到 LaTeX 转换工具</a>
+  <div class="topbar"><div class="wrap">LaTeX 公式实时预览 · 支持 DOCX 与 PDF 输出</div></div>
+  <div class="nav-shell"><nav class="wrap nav" aria-label="主导航">
+    <a class="brand" href="../"><img src="../images/markdown2word-logo.png" alt="Markdown2Word 标志">Markdown2Word</a>
+    <button class="menu" aria-label="打开导航" aria-expanded="false">菜单</button>
+    <div class="links"><a href="../">Markdown 转 Word</a><a class="active" href="./">LaTeX 转 Word</a><a href="../guides/">使用教程</a><a href="../compatibility/">兼容性</a><a href="../about/">关于</a><a class="button" href="#converter">开始转换</a></div>
+  </nav></div>
+
+  <main>
+    <section class="tool-hero" id="converter"><div class="wrap">
+      <div class="tool-intro">
+        <span class="eyebrow">LaTeX2Word · 公式转 DOCX</span>
+        <h1><em>LaTeX 转 Word</em> 在线工具</h1>
+        <p>输入 LaTeX 公式或上传 TEX 文件，实时检查公式效果并生成可继续编辑的 Word DOCX</p>
+        <div class="trust-row" aria-label="工具特点"><span>公式实时预览</span><span>可编辑DOCX</span><span>支持Word与WPS</span><span>附加PDF输出</span></div>
+      </div>
+
+      <div class="converter-shell" aria-label="LaTeX 转 Word 工具">
+        <div class="converter-toolbar">
+          <div class="tool-tabs" aria-label="输出格式"><button class="format-option active" type="button" data-format="word">Word DOCX</button><button class="format-option" type="button" data-format="pdf">PDF <small>附加格式</small></button></div>
+          <div class="tool-actions"><input class="hidden-file" type="file" id="latexFile" accept=".tex,.latex,.txt,text/plain,application/x-tex"><button class="tool-action" type="button" id="pasteButton">粘贴</button><button class="tool-action" type="button" id="uploadButton">上传 TEX</button><button class="tool-action" type="button" id="sampleButton">载入示例</button><button class="tool-action" type="button" id="clearButton">清空</button></div>
+          <div class="account-area"><span class="account-status" id="accountStatus">未登录</span><button class="tool-action" type="button" id="loginButton">登录</button><button class="tool-action logout-button" type="button" id="logoutButton">退出</button></div>
+        </div>
+        <div class="latex-shortcuts" aria-label="常用公式"><span>快速插入</span><button type="button" data-latex-insert="\frac{}{}">分式</button><button type="button" data-latex-insert="\sqrt{}">根式</button><button type="button" data-latex-insert="x^{}">上标</button><button type="button" data-latex-insert="x_{}">下标</button><button type="button" data-latex-insert="\sum_{i=1}^{n} {}">求和</button><button type="button" data-latex-insert="\int_{}^{} {} \,dx">积分</button><button type="button" data-latex-insert="\begin{bmatrix} a &amp; b \\ c &amp; d \end{bmatrix}">矩阵</button><button type="button" data-latex-insert="\begin{cases} {} &amp; x \ge 0 \\ {} &amp; x &lt; 0 \end{cases}">分段函数</button></div>
+        <div class="editor-grid">
+          <section class="editor-pane" aria-labelledby="inputHeading"><div class="pane-heading"><span id="inputHeading">LaTeX 编辑器</span><span id="charCount">0 字符</span></div><textarea id="latexInput" spellcheck="false" aria-label="LaTeX 内容" placeholder="输入纯公式，或使用 $...$、$$...$$、\(...\)、\[...\] 包围混合文本中的公式"></textarea></section>
+          <section class="editor-pane" aria-labelledby="previewHeading"><div class="pane-heading"><span id="previewHeading">公式实时预览</span><span class="preview-caption">最终效果以导出文件为准</span></div><div class="preview latex-preview" id="latexPreview" aria-live="polite"></div></section>
+        </div>
+        <div class="converter-bottom"><div class="converter-status" id="converterStatus" role="status">输入公式后即可转换。</div><button class="button convert-button" id="convertButton" type="button">转换为 Word</button></div>
+        <div class="result-card" id="resultCard"><span id="resultText">文档已生成。</span><a id="downloadLink" href="#" target="_blank" rel="noopener">下载文件</a></div>
+      </div>
+    </div></section>
+
+    <section class="section"><div class="wrap"><div class="section-head"><h2>从 LaTeX 公式到可编辑 Word</h2><p>适合论文、实验报告、课件和技术文档中的数学公式</p></div><div class="support-grid"><article class="support-item"><b>常用公式</b><span>支持分式、根式、上下标、求和与积分</span></article><article class="support-item"><b>矩阵与分段</b><span>处理矩阵、行列式和分段函数结构</span></article><article class="support-item"><b>混合文本</b><span>支持普通文字与行内、独立公式组合</span></article><article class="support-item"><b>TEX 文件</b><span>可载入单个 TEX 文件并继续编辑</span></article></div></div></section>
+
+    <section class="section tint"><div class="wrap"><div class="section-head"><h2>LaTeX 转 Word 使用方法</h2><p>输入、预览、转换三步完成公式文档导出</p></div><div class="grid3"><article class="card"><div class="icon">1</div><h3>输入 LaTeX</h3><p>粘贴公式、上传 TEX 文件或使用快捷按钮插入常用结构</p></article><article class="card"><div class="icon">2</div><h3>检查预览</h3><p>实时检查公式结构，预览错误不会阻止继续转换</p></article><article class="card"><div class="icon">3</div><h3>生成 Word</h3><p>登录并确认会员状态后生成 DOCX，在 Word 或 WPS 中继续编辑</p></article></div></div></section>
+
+    <section class="section faq"><div class="wrap"><div class="section-head"><h2>常见问题</h2><p>使用 LaTeX 转 Word 工具前需要了解的信息</p></div><details><summary>纯公式需要添加美元符号吗？</summary><p>不需要。如果输入中没有公式分隔符，工具会把全部内容作为独立公式处理。文字和公式混合时，请使用 $...$、$$...$$、\(...\) 或 \[...\] 标记公式。</p></details><details><summary>预览报错后还能转换吗？</summary><p>可以。浏览器预览和文档转换使用的公式引擎可能存在差异，预览错误不会禁用转换按钮。</p></details><details><summary>生成的 Word 可以继续编辑吗？</summary><p>接口会生成 DOCX 文件。复杂公式的可编辑性和视觉效果请以实际导出的文档以及所用 Word 或 WPS 版本为准。</p></details><details><summary>支持 PDF 输出吗？</summary><p>支持，可以在工具顶部切换 Word DOCX 或 PDF。</p></details></div></section>
+  </main>
+
+  <footer class="footer"><div class="wrap footer-grid"><div><a class="brand" href="../"><img src="../images/markdown2word-logo.png" alt="Markdown2Word">Markdown2Word</a><p>Markdown 与 LaTeX 内容转 Word 的在线工具站</p></div><div><h3>在线工具</h3><a href="../#converter">Markdown 转 Word</a><a href="./">LaTeX 转 Word</a><a href="../guides/latex-to-word/">LaTeX 转 Word教程</a></div><div><h3>站点信息</h3><a href="../about/">关于本站</a><a href="../privacy/">隐私说明</a><a href="../compatibility/">兼容性指南</a></div></div><div class="wrap footer-bottom"><span>© 2026 Markdown2Word</span><span>LaTeX 转 Word · 公式转 DOCX · LaTeX2Word</span></div></footer>
+
+  <div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-labelledby="loginTitle" aria-hidden="true"><div class="modal-backdrop" data-close-modal></div><div class="modal-card"><div class="modal-header"><h2 id="loginTitle">微信扫码登录</h2><button class="modal-close" type="button" aria-label="关闭登录弹窗" data-close-modal>×</button></div><div class="modal-body"><div class="qr-frame"><img id="loginQr" class="loading" alt="微信登录二维码"></div><h3>使用微信扫码登录</h3><p>新用户扫码后将自动创建账号，免费使用</p><div id="loginCountdown" class="modal-message"></div><div id="loginMessage" class="modal-message">正在获取登录二维码…</div></div></div></div>
+  <div class="modal" id="vipModal" role="dialog" aria-modal="true" aria-labelledby="vipTitle" aria-hidden="true"><div class="modal-backdrop" data-close-modal></div><div class="modal-card"><div class="modal-header"><h2 id="vipTitle">开通 Markdown2Word VIP</h2><button class="modal-close" type="button" aria-label="关闭会员弹窗" data-close-modal>×</button></div><div class="modal-body"><div class="qr-frame"><img id="vipQr" alt="VIP付款二维码"></div><h3>微信扫码完成会员开通</h3><p>付款将在微信中完成，本站不会收集你的支付信息</p><div id="vipMessage" class="modal-message">完成付款后，请点击下方按钮刷新会员状态。</div><button class="button payment-button" id="paymentCompleted" type="button">已完成支付</button></div></div></div>
+
+  <script src="../assets/site.js"></script>
+  <script src="../assets/vendor/katex/katex.min.js"></script>
+  <script src="../assets/vendor/katex/contrib/auto-render.min.js"></script>
+  <script src="../assets/converter.js"></script>
+</body>
+</html>

@@ -8,7 +8,8 @@
 - 浏览器内实时预览标题、列表、引用、代码和表格
 - 通过现有转换 API 生成 Word 或 PDF
 - 微信扫码登录、会员状态查询和付款后二次确认
-- Markdown 转 Word 中文教程、模板和兼容性内容集群
+- Markdown 与 LaTeX 转 Word 中文教程、模板和兼容性内容集群
+- LaTeX 编辑、常用公式快捷插入、实时预览和 TEX 文件上传
 - 独立品牌路径，不跳转至 AIWhaler、应用商店或插件下载页
 
 ## 运行方式
@@ -17,6 +18,7 @@
 
 ```text
 index.html                首页与转换器
+latex-to-word/            LaTeX 编辑、预览与转换工具
 assets/converter.js       登录、会员和转换流程
 assets/converter.css      转换器界面样式
 assets/site.js            公共导航交互
