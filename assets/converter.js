@@ -452,7 +452,7 @@
     }
   }
 
-  const markdownSample = `# Markdown 转 Word 示例\n\nMarkdown2Word 可以保留常用的文档结构，并生成可编辑的 Word 文档。\n\n## 支持的内容\n\n- **加粗文字**和*强调文字*\n- 有序列表与无序列表\n- 代码块、引用和链接\n- Markdown 表格\n- LaTeX 公式：$E = mc^2$\n\n| 功能 | 输出结果 |\n| --- | --- |\n| 标题 | Word 标题样式 |\n| 表格 | 可编辑表格 |\n| 公式 | 数学公式 |\n\n> 正式交付前，建议在 Word 或 WPS 中复核最终文档。\n\n\`\`\`javascript\nconst message = 'Hello, Markdown2Word';\nconsole.log(message);\n\`\`\``;
+  const markdownSample = `# 复杂 Markdown 转 Word 示例\n\n这份示例用于测试普通转换器容易遗漏的复杂内容。\n\n## 表格内 LaTeX 公式\n\n| 模型 | 损失函数 | 梯度 |\n| --- | --- | --- |\n| 线性回归 | $L(\\\\theta)=\\\\frac{1}{n}\\\\sum_{i=1}^{n}(y_i-\\\\hat{y}_i)^2$ | $\\\\nabla_{\\\\theta}L$ |\n| 正则化 | $L_2=\\\\lambda\\\\lVert\\\\mathbf{w}\\\\rVert_2^2$ | $\\\\frac{\\\\partial L}{\\\\partial w_j}$ |\n\n## 下划线与多行公式\n\n$$\n\\\\begin{aligned}\nx_{train} &= [x_1,x_2,\\\\ldots,x_n] \\\\\\\\ny_{pred} &= f_{\\\\theta}(x_{train})\n\\\\end{aligned}\n$$\n\n## Mermaid 图表\n\n\`\`\`mermaid\nflowchart LR\n  MD[复杂 Markdown] --> Parse[结构解析]\n  Parse --> Formula[LaTeX 公式]\n  Parse --> Vector[SVG 图片]\n  Formula --> DOCX[可编辑 Word]\n  Vector --> DOCX\n\`\`\`\n\n## SVG 图片\n\n![SVG 架构图](https://www.w3.org/Icons/SVG/svg-logo.svg)\n\n> 导出阶段会进一步处理复杂公式、图表与矢量资源。`;
   const latexSample = `\\section{常用数学公式}\n\n二次方程的求根公式为：\n\n\\[\n x = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}\n\\]\n\n欧拉公式为 $e^{i\\pi}+1=0$。\n\n\\begin{equation}\n \\int_0^\\infty e^{-x^2}\\,dx = \\frac{\\sqrt{\\pi}}{2}\n\\end{equation}`;
   const sample = isLatexTool ? latexSample : markdownSample;
 

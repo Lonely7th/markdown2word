@@ -2,15 +2,16 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url><loc>https://www.markdown2word.cn/</loc><lastmod>2026-08-17</lastmod><priority>1.0</priority></url>
   <url><loc>https://www.markdown2word.cn/latex-to-word/</loc><lastmod>2026-08-17</lastmod><priority>0.9</priority></url>
-  <url><loc>https://www.markdown2word.cn/markdown-to-word/</loc><lastmod>2026-08-16</lastmod><priority>0.9</priority></url>
-  <url><loc>https://www.markdown2word.cn/guides/</loc><lastmod>2026-08-16</lastmod><priority>0.8</priority></url>
-  <url><loc>https://www.markdown2word.cn/guides/deepseek-to-word/</loc><lastmod>2026-08-16</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.markdown2word.cn/markdown-to-word/</loc><lastmod>2026-09-01</lastmod><priority>0.9</priority></url>
+  <url><loc>https://www.markdown2word.cn/guides/</loc><lastmod>2026-09-01</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.markdown2word.cn/guides/deepseek-to-word/</loc><lastmod>2026-09-01</lastmod><priority>0.8</priority></url>
   <url><loc>https://www.markdown2word.cn/guides/latex-to-word/</loc><lastmod>2026-08-17</lastmod><priority>0.8</priority></url>
-  <url><loc>https://www.markdown2word.cn/guides/md-table-word/</loc><lastmod>2026-08-16</lastmod><priority>0.8</priority></url>
-  <url><loc>https://www.markdown2word.cn/guides/mermaid-to-word/</loc><lastmod>2026-08-16</lastmod><priority>0.8</priority></url>
-  <url><loc>https://www.markdown2word.cn/templates/</loc><lastmod>2026-08-16</lastmod><priority>0.7</priority></url>
-  <url><loc>https://www.markdown2word.cn/compatibility/</loc><lastmod>2026-08-16</lastmod><priority>0.7</priority></url>
-  <url><loc>https://www.markdown2word.cn/compare/</loc><lastmod>2026-08-16</lastmod><priority>0.6</priority></url>
-  <url><loc>https://www.markdown2word.cn/about/</loc><lastmod>2026-08-16</lastmod><priority>0.4</priority></url>
-  <url><loc>https://www.markdown2word.cn/privacy/</loc><lastmod>2026-08-16</lastmod><priority>0.3</priority></url>
+  <url><loc>https://www.markdown2word.cn/guides/md-table-word/</loc><lastmod>2026-09-01</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.markdown2word.cn/guides/mermaid-to-word/</loc><lastmod>2026-09-01</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.markdown2word.cn/guides/svg-to-word/</loc><lastmod>2026-09-01</lastmod><priority>0.8</priority></url>
+  <url><loc>https://www.markdown2word.cn/templates/</loc><lastmod>2026-09-01</lastmod><priority>0.7</priority></url>
+  <url><loc>https://www.markdown2word.cn/compatibility/</loc><lastmod>2026-09-01</lastmod><priority>0.7</priority></url>
+  <url><loc>https://www.markdown2word.cn/compare/</loc><lastmod>2026-09-01</lastmod><priority>0.6</priority></url>
+  <url><loc>https://www.markdown2word.cn/about/</loc><lastmod>2026-09-01</lastmod><priority>0.4</priority></url>
+  <url><loc>https://www.markdown2word.cn/privacy/</loc><lastmod>2026-09-01</lastmod><priority>0.3</priority></url>
 </urlset>
